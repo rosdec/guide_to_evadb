@@ -1,12 +1,6 @@
 import evadb
 
-
 cursor = evadb.connect().cursor()
-
-# cursor.query('''
-#     CREATE DATABASE sqlite_data WITH ENGINE = "sqlite", PARAMETERS = {
-#          "database": "evadb.db"
-#     };''').df()
 
 cursor.query("""
     CREATE FUNCTION IF NOT EXISTS SentimentAnalysis
@@ -19,7 +13,7 @@ cursor.query("""
         twit TEXT(140));
 """).df()
 
-#cursor.query("LOAD CSV 'tweets.csv' INTO twits;").df()
+cursor.query("LOAD CSV 'tweets.csv' INTO twits;").df()
 
 response = cursor.query("""
     SELECT twit, SentimentAnalysis(twit) FROM twits     

@@ -23,6 +23,7 @@ from evadb.functions.decorators.io_descriptors.data_types import PandasDataframe
 
 from textblob import TextBlob
 
+
 class SentimentAnalysis(AbstractFunction):
     """
     Arguments:
@@ -32,7 +33,7 @@ class SentimentAnalysis(AbstractFunction):
     @property
     def name(self) -> str:
         return "SentimentAnalysis"
-    
+
     @setup(cacheable=True, function_type="object_detection", batchable=False)
     def setup(self):
         print("Setup")
@@ -45,29 +46,9 @@ class SentimentAnalysis(AbstractFunction):
             PandasDataframe
         ],
     )
-    @forward(
-    input_signatures=[
-        PandasDataframe(
-            columns=["twit"],
-            column_types=[
-                NdArrayType.STR,
-            ],
-            column_shapes=[(1,)],
-        )
-    ],
-    output_signatures=[
-        PandasDataframe(
-            columns=["label"],
-            column_types=[
-                NdArrayType.STR,
-            ],
-            column_shapes=[(1,)],
-        )
-    ],
-)
     def forward(self, frames):
         tb = [TextBlob(x).sentiment.polarity for x in frames['twit']]
 
-        df = pd.DataFrame(data=tb, columns=['labels']) 
+        df = pd.DataFrame(data=tb, columns=['label'])
 
         return df
