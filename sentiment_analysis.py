@@ -40,10 +40,22 @@ class SentimentAnalysis(AbstractFunction):
 
     @forward(
         input_signatures=[
-            PandasDataframe
+            PandasDataframe(
+                columns=["twit"],
+                column_types=[
+                    NdArrayType.STR,
+                ],
+                column_shapes=[(1,)],
+            )
         ],
         output_signatures=[
-            PandasDataframe
+            PandasDataframe(
+                columns=["label"],
+                column_types=[
+                    NdArrayType.STR,
+                ],
+                column_shapes=[(1,)],
+            )
         ],
     )
     def forward(self, frames):
